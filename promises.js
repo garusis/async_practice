@@ -11,7 +11,7 @@ function log(message) {
 }
 
 function asyncOperationWithPromise(order) {
-    const time = Math.ceil(Math.random() * 10000)
+    const time = Math.ceil(Math.random() * 5000)
 
     return new Promise(function (resolve, reject) {
         setTimeout(function () {
@@ -52,62 +52,58 @@ function noSyncCanFail() {
 }
 
 function allOk() {
-    let time = 0
     asyncOperationWithPromise(0)
-        .then(function (response) {
-            time += response
+        .then(function (first) {
             return asyncOperationWithPromise(1)
+                .then(current => first + current)
         })
-        .then(function (response) {
-            time += response
+        .then(function (accum) {
             return asyncOperationWithPromise(2)
+                .then(current => accum + current)
         })
-        .then(function (response) {
-            time += response
+        .then(function (accum) {
             return asyncOperationWithPromise(3)
+                .then(current => accum + current)
         })
-        .then(function (response) {
-            time += response
+        .then(function (accum) {
             return asyncOperationWithPromise(4)
+                .then(current => accum + current)
         })
-        .then(function (response) {
-            time += response
+        .then(function (accum) {
             return asyncOperationWithPromise(5)
+                .then(current => accum + current)
         })
-        .then(function (response) {
-            time += response
-            log(response)
+        .then(function (accum) {
+            log(accum)
         })
         .catch(err => error(err.message))
 }
 
 
 function syncCanFail() {
-    let time = 0
     asyncOperationWithPromiseThatCanFail(0)
-        .then(function (response) {
-            time += response
+        .then(function (first) {
             return asyncOperationWithPromiseThatCanFail(1)
+                .then(current => first + current)
         })
-        .then(function (response) {
-            time += response
+        .then(function (accum) {
             return asyncOperationWithPromiseThatCanFail(2)
+                .then(current => accum + current)
         })
-        .then(function (response) {
-            time += response
+        .then(function (accum) {
             return asyncOperationWithPromiseThatCanFail(3)
+                .then(current => accum + current)
         })
-        .then(function (response) {
-            time += response
+        .then(function (accum) {
             return asyncOperationWithPromiseThatCanFail(4)
+                .then(current => accum + current)
         })
-        .then(function (response) {
-            time += response
+        .then(function (accum) {
             return asyncOperationWithPromiseThatCanFail(5)
+                .then(current => accum + current)
         })
-        .then(function (response) {
-            time += response
-            log(response)
+        .then(function (accum) {
+            log(accum)
         })
         .catch(err => error(err.message))
 }
